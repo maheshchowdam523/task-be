@@ -1,0 +1,333 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "To-do Project CRUD",
+    "description": "To-do Project Application API",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "To-do",
+      "description": "API for todos in the system"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/addTodo": {
+      "post": {
+        "tags": [
+          "To-do"
+        ],
+        "summary": "Add a new To-do",
+        "parameters": [
+          {
+            "name": "todo",
+            "in": "body",
+            "description": "To-do that we want to create",
+            "schema": {
+              "$ref": "#/definitions/AddTodo"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "To-do is added",
+            "schema": {
+              "$ref": "#/definitions/Todo"
+            }
+          }
+        }
+      }
+    },
+    "/todos": {
+      "get": {
+        "tags": [
+          "To-do"
+        ],
+        "parameters": [
+          {
+            "name": "filter",
+            "in": "path",
+            "required": false,
+            "description": "to-do filter",
+            "type": "string"
+          }
+        ],
+        "summary": "Get all available to-dos in system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Todos"
+            }
+          }
+        }
+      }
+    },
+    "/dashboard": {
+      "get": {
+        "tags": [
+          "To-do"
+        ],
+        "summary": "Get Dashboard data",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Dashboard"
+            }
+          }
+        }
+      }
+    },
+    "/todos/{id}": {
+      "put": {
+        "summary": "Update to-do with give ID",
+        "tags": [
+          "To-do"
+        ],
+        "parameters": [
+          {
+            "name": "to-do",
+            "in": "body",
+            "description": "To-do with new properties",
+            "schema": {
+              "$ref": "#/definitions/updateTodo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Todo is updated",
+            "schema": {
+              "$ref": "#/definitions/Todo"
+            }
+          }
+        }
+      },
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "ID of to-do that we want to find",
+          "type": "string"
+        }
+      ],
+      "delete": {
+        "summary": "Delete to-do with given ID",
+        "tags": [
+          "To-do"
+        ],
+        "responses": {
+          "200": {
+            "description": "To-do is deleted",
+            "schema": {
+              "$ref": "#/definitions/Todo"
+            }
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": [
+          "User Management"
+        ],
+        "summary": "Login with credentials",
+        "parameters": [
+          {
+            "name": "login",
+            "in": "body",
+            "description": "Login with details",
+            "schema": {
+              "$ref": "#/definitions/Login"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Login is successful",
+            "schema": {
+              "$ref": "#/definitions/Login"
+            }
+          }
+        }
+      }
+    },
+    "/createUser": {
+      "post": {
+        "tags": [
+          "User Management"
+        ],
+        "summary": "Create a User",
+        "parameters": [
+          {
+            "name": "addUser",
+            "in": "body",
+            "description": "User with details",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Login is successful",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        }
+      }
+    },
+    "/logout/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "ID of the user to log out",
+          "type": "string"
+        }
+      ],
+      "delete": {
+        "tags": [
+          "User Management"
+        ],
+        "summary": "Logout the application",
+        "responses": {
+          "200": {
+            "description": "Logout is successful"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "AddTodo": {
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "Todo": {
+      "required": [
+        "name",
+        "_id"
+      ],
+      "properties": {
+        "_id": {
+          "type": "integer",
+          "uniqueItems": true
+        },
+        "name": {
+          "type": "string"
+        },
+        "completed": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "type": "string", "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string", "format": "date-time"
+        }
+      }
+    },
+    "updateTodo": {
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "completed": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Todos": {
+      "type": "array",
+      "$ref": "#/definitions/Todo"
+    },
+    "Dashboard": {
+      "required": [
+        "totalCount", "completedCount", "recentTasks"],
+      "properties": {
+        "totalCount": {
+          "type": "number"
+        },
+        "completedCount": {
+          "type": "number"
+        },
+        "recentTasks": {
+          "type": "array",
+          "$ref": "#/definitions/Todo"
+        }
+      }
+    },
+    "Login": {
+      "required": [
+        "username",
+        "password"
+      ],
+      "properties": {
+        "username": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "User": {
+      "required": [
+        "name",
+        "username",
+        "password"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
